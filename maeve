@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+
+import subprocess, json, sys
+
+shell_command = "maas admin events query level=AUDIT"
+subprocess = subprocess.run(shell_command, shell=True, text=True, stdout=subprocess.PIPE)
+subprocess_return = subprocess.stdout
+
+json_object = json.loads(subprocess_return)
+print(json_object['next_uri'])
+sys.exit()
+print('{:^26s} | {:^12s} | {:^20s} | {:^s}'.format("TIMESTAMP",
+"USERNAME","HOSTNAME","DESCRIPTION"))
+for event in json_object['events']:
+    print('{:<26s} | {:<12s} | {:<20s} | {:<s}'.format (event['created'],
+    event['username'],event['hostname'],event['description']))
